@@ -1,0 +1,23 @@
+.mode columns
+.headers on
+
+DROP TABLE IF EXISTS AmizadeTransitiva;
+
+CREATE TABLE AmizadeTransitiva( 
+	ID1 INTEGER, 
+	ID2 INTEGER,
+	PRIMARY KEY(ID1, ID2),
+	CHECK(ID1 <> ID2)
+);
+
+INSERT INTO AmizadeTransitiva(ID1, ID2)
+SELECT E1.ID, E3.ID
+FROM Estudante E1 join Amizade A1 join Estudante E2 join Amizade A2 join Estudante E3
+WHERE E1.ID=A1.ID1 AND A1.ID2=E2.ID AND E2.ID=A2.ID1 AND A2.ID2=E3.ID
+AND E1.ID <> E3.ID
+AND NOT EXISTS(SELECT * FROM Amizade A3 WHERE A3.ID1=E1.ID AND A3.ID2=E3.ID)
+AND NOT EXISTS(SELECT * FROM AmizadeTransitiva AT WHERE AT.ID1=E1.ID AND AT.ID2=E3.ID)
+GROUP BY E1.ID, E3.ID
+ORDER BY E1.ID;
+
+SELECT * FROM AmizadeTransitiva;

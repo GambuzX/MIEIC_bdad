@@ -1,15 +1,19 @@
 PRAGMA FOREIGN_KEYS=ON;
 
 /* Apaga as tabelas se já existirem */
-drop table if exists Estudante;
 drop table if exists Amizade;
+drop table if exists Estudante;
 drop table if exists Curso;
+
+--DROP TABLE if exists query5Table;
 
 /* Cria as tabelas */
 create table Estudante(ID int PRIMARY KEY, nome text, curso int REFERENCES Curso(ID), anoCurricular int);
 create table Amizade(ID1 int REFERENCES Estudante(ID), ID2 int REFERENCES Estudante(ID), PRIMARY KEY (ID1, ID2));
 
 create table Curso (ID int PRIMARY KEY, nome text);
+
+.read trigger1.sql
 
 /* Insere dados nas tabelas */
 insert into Curso values (1, 'MIEIC');
@@ -51,4 +55,11 @@ insert into Amizade values (201101316, 201101934);
 insert into Amizade values (201101934, 201101304);
 insert into Amizade values (201101304, 201101661);
 insert into Amizade values (201101661, 201101025);
-insert into Amizade select ID2, ID1 from Amizade;
+--insert into Amizade select ID2, ID1 from Amizade;
+
+update Amizade set id1='11111' WHERE id1='201101689';
+
+
+DROP TRIGGER if exists insertTrigger;
+DROP TRIGGER if exists deleteTrigger;
+DROP TRIGGER if exists onUpdate;
